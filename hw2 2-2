@@ -1,0 +1,66 @@
+#include "stdio.h"
+#include "stdlib.h"
+
+int** MagicSquare(int n) {
+    int i, k = 0, j = (n - 1) / 2, number = 1, m = n - 1;
+    int** square = NULL;
+    int* s;
+    square = (int**)malloc(sizeof(int*) * n);
+
+    for (i = 0; i < n; i++) {
+    square[i] = (int*)malloc(sizeof(int) * n);
+}
+    while (number <= n * n) {
+        printf("%d %d\n", k, j);
+        s = square[k];
+        s[j] = number;
+        
+        number++;
+        if ((number - 1) % n == 0) {
+            k++;
+            continue;
+        }
+        if (k - 1 < 0 && j != m) {
+            k += m;
+            j++;
+            continue;
+        }
+        if (k != 0 && j == m) {
+            j -= m;
+            k--;
+            continue;
+        }
+        if (k == 0 && j == m){
+            k++;
+            continue;
+        }
+        else {
+            k--;
+            j++;
+            continue;
+        }
+        
+    }
+    return square;
+}
+
+void FreeMagicSquare(int** magicSquare, int n) {
+    int i;
+    for (i = 0; i < n; i++)
+        free(magicSquare[i]);
+    free(magicSquare);
+}
+
+int main() {
+    int n;
+    scanf_s("%d", &n); // Please input a positive odd number.
+    int** magicSquare = MagicSquare(n);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%4d", magicSquare[i][j]);
+        }
+        printf("\n");
+    }
+    FreeMagicSquare(magicSquare, n);
+    return 0;
+}
