@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+void check(char*);
+int main(){
+  char original[6000];
+  scanf("%s",original);
+  int times,i,x, y;
+  scanf("%d",&times);
+  
+  printf("%s",original);
+ 
+  char *command, oneline[1200], *order1, *order2;
+  
+  for(i = 0;i < times;i++){
+      printf("ss");
+    scanf("%s\n",oneline);
+    
+    command = strtok(oneline," ");
+    order1 = strtok(oneline," ");
+    order2 = strtok(oneline," ");
+    if(command[0] == '0'){
+      char newstring[6000];
+      sscanf(order1,"%d",&x);
+      sscanf(order2,"%d",&y);
+      for(i=0;i < y-x+1;i++)
+        newstring[i] = original[x+i];
+        
+      check(newstring);
+    }
+    if(command[0] == '1')
+      sscanf(order1,"%d",&x);
+      original[x] = order2[0];
+    if(command[0] == '2')
+      strcat(original,order1);
+  }
+}
+void check(char *a){
+  int x = strlen(a),i ,y = 0, s,k;
+  char news[6000];
+  for(i = 0;i < x;i++){
+  	if(isalpha(*(a + i)))
+      news[y++] = *(a + i);
+  }
+  s = strlen(news) / 2;
+  for(i = 0;i < s;i++){
+    if(news[i] == news[strlen(news)-1-i])
+      k++;
+  }
+  if (k == s)
+      printf("Yes\n");
+  else
+      printf("No\n");
+}
