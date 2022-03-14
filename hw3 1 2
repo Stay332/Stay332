@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+void check(char*);
+int main() {
+    char original[6000], each;
+    int times, i, x, y, ind = 0,k;
+    while (scanf("%c", &each) != EOF) {
+        if (each != '\n')
+        original[ind++] = each;
+        if (each == '\n') {
+            original[ind] = '\0';
+            break;
+        }
+    }
+    scanf("%d", &times);
+    char* command, oneline[6000], * order1, * order2,each1;
+    for (k = 0; k < times; k++) {
+        ind = 0;
+        scanf("%c", &each1);
+        do {if(each1 != '\n')
+            oneline[ind++] = each1;
+            scanf("%c", &each1);
+        } while (each1 != '\n');
+        
+        oneline[ind] = '\0';
+      
+        if (oneline[0] == '0') {
+            command = strtok(oneline, " ");
+            order1 = strtok(NULL, " ");
+        	order2 = strtok(NULL, " ");
+            char newstring[6000]= "";
+            sscanf(order1, "%d", &x);
+            sscanf(order2, "%d", &y);
+            for (i = 0; i < y - x + 1; i++)
+                newstring[i] = original[x + i];
+            check(newstring);
+        }
+        if (oneline[0] == '1') {
+            char last = oneline[ind-1], number[5]="";
+            for(i=2;i<=strlen(oneline)-3;i++)
+              number[i-2]=oneline[i];
+            number[i] = '\0';
+            sscanf(number, "%d", &x);
+            original[x] = last;
+        }
+        if (oneline[0] == '2'){
+          char sub[1000] = "";
+          i = 0;
+          while(oneline[i+2] != '\0'){
+            sub[i] = oneline[i+2];
+            i++;
+          }
+          sub[i] = '\0';
+          strcat(original, sub);
+        }
+    }
+    return 0;
+}
+void check(char *a){
+  int x = strlen(a),i ,y = 0, s,k=0;
+  char news[6000];
+  for(i = 0;i < x;i++){
+  	if(isalpha(*(a + i)))
+      news[y++] = tolower(*(a + i));
+  }
+  s = strlen(news) / 2;
+  for(i = 0;i < s;i++){
+    if(news[i] == news[strlen(news)-1-i])
+      k++;
+  }
+
+  if (k == s || x == 1)
+      printf("Yes\n");
+  else
+      printf("No\n");
+}
