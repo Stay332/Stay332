@@ -3,52 +3,74 @@
 #include <stdlib.h>
 #include <ctype.h>
 void check(char*);
-int main(){
-  char original[6000];
-  scanf("%s",original);
-  int times,i,x, y;
-  scanf("%d",&times);
-  
-  printf("%s",original);
- 
-  char *command, oneline[1200], *order1, *order2;
-  
-  for(i = 0;i < times;i++){
-      printf("ss");
-    scanf("%s\n",oneline);
-    
-    command = strtok(oneline," ");
-    order1 = strtok(oneline," ");
-    order2 = strtok(oneline," ");
-    if(command[0] == '0'){
-      char newstring[6000];
-      sscanf(order1,"%d",&x);
-      sscanf(order2,"%d",&y);
-      for(i=0;i < y-x+1;i++)
-        newstring[i] = original[x+i];
-        
-      check(newstring);
+int main() {
+    char original[6000], each;
+    int times, i, x, y, ind = 0,k;
+    while (scanf("%c", &each) != EOF) {
+        if (each != '\n')
+        original[ind++] = each;
+        if (each == '\n') {
+            original[ind] = '\0';
+            break;
+        }
     }
-    if(command[0] == '1')
-      sscanf(order1,"%d",&x);
-      original[x] = order2[0];
-    if(command[0] == '2')
-      strcat(original,order1);
-  }
+    scanf("%d", &times);
+    char* command, oneline[6000], * order1, * order2,each1;
+    for (k = 0; k < times; k++) {
+        ind = 0;
+        scanf("%c", &each1);
+        do {if(each1 != '\n')
+            oneline[ind++] = each1;
+            scanf("%c", &each1);
+        } while (each1 != '\n');
+        
+        oneline[ind] = '\0';
+      char last = oneline[ind-1];
+       if(oneline[0]=='2' && oneline[2] == ' '){
+         int num = 0,lenth1 = strlen(oneline), lenth2 = strlen(original);
+           do{
+              original[lenth2 + num++] = ' ';
+           }while(oneline[num + 2] == ' ');
+         original[strlen(original)+num] = '\0';
+        }
+        command = strtok(oneline, " ");
+        order1 = strtok(NULL, " ");
+        order2 = strtok(NULL, " ");
+        if (command[0] == '0') {
+            char newstring[6000];
+            sscanf(order1, "%d", &x);
+            sscanf(order2, "%d", &y);
+            for (i = 0; i < y - x + 1; i++)
+                newstring[i] = original[x + i];
+            check(newstring);
+            for (i = 0; i < y - x + 1; i++)
+                newstring[i] = 0;
+        }
+        if (command[0] == '1') {
+            sscanf(order1, "%d", &x);
+            original[x] = last;
+        }
+        if (command[0] == '2'){
+            strcat(original, order1);
+            
+        }
+    }
+    return 0;
 }
 void check(char *a){
-  int x = strlen(a),i ,y = 0, s,k;
+  int x = strlen(a),i ,y = 0, s,k=0;
   char news[6000];
   for(i = 0;i < x;i++){
   	if(isalpha(*(a + i)))
-      news[y++] = *(a + i);
+      news[y++] = tolower(*(a + i));
   }
   s = strlen(news) / 2;
   for(i = 0;i < s;i++){
     if(news[i] == news[strlen(news)-1-i])
       k++;
   }
-  if (k == s)
+
+  if (k == s || x == 1)
       printf("Yes\n");
   else
       printf("No\n");
