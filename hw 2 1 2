@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+void indent(int);
+void front(char*,int);
+void back(char*,int,int);
+void normal(char*);
+int main() {
+    char each, after[100];
+    int times, indent = 0, front = 0, back = 0,par = 0;
+    const int space = 4;
+    scanf("%d\n",&times);
+    while(scanf("%c",&each) != EOF) {
+        char oneline[80] = "";
+        index = 0;
+        oneline[index++] = each;
+        while(scanf("%c",&each) != EOF){
+            oneline[index++] = each;
+            if(each == '\n'){
+                oneline[index] = '\0';
+                index = 0;
+                break;
+            }
+        }
+        int i = strlen(oneline),k,d;
+        for(k=0;k < i;k++){
+            if(oneline[k] == '(')
+                par++;
+            if(oneline[k] == ')')
+                par--;
+            if(oneline[k] == '{'){
+                front++;
+            }
+            if(oneline[k] == '}'){
+                front--;
+            }
+            
+        }
+    }
+    return 0;
+}
+void indent(int a){
+    int i = 0;
+    for (i = 0; i < a;i++)
+        printf("    ");
+}
+void front(char* a,int b){
+    int end = b,i;
+    while((*(a+b)) == ' ')
+        end--;
+    for(i=0;i < b;i++)
+        printf("%c",*(a+b));
+    printf(" ");
+    printf("{\n");
+}
+void back(char* a, int b,int length){
+    int i;
+    for(i = b; i <= length;i++)
+        printf("%c",*(a+i));
+}
+void normal(char* a,int start,int end){
+    int length = strlen(a), i;
+    for(i = start;i<=end;i++)
+        printf("%c",*(a+i));
+    printf("\n");
+}
