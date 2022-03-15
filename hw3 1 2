@@ -27,14 +27,11 @@ int main() {
         oneline[ind] = '\0';
       
         if (oneline[0] == '0') {
-            command = strtok(oneline, " ");
-            order1 = strtok(NULL, " ");
-        	order2 = strtok(NULL, " ");
-            char newstring[6000]= "";
-            sscanf(order1, "%d", &x);
-            sscanf(order2, "%d", &y);
+          char newstring[6000] = "";
+            sscanf(oneline, "0 %d %d", &x,&y);
             for (i = 0; i < y - x + 1; i++)
                 newstring[i] = original[x + i];
+            newstring[y+1] = '\0';
             check(newstring);
         }
         if (oneline[0] == '1') {
@@ -64,6 +61,7 @@ void check(char *a){
   for(i = 0;i < x;i++){
   	if(isalpha(*(a + i)))
       news[y++] = tolower(*(a + i));
+    news[y] = '\0';
   }
   s = strlen(news) / 2;
   for(i = 0;i < s;i++){
