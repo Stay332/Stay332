@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+void indent1(int);
+void front1(char*,int);
+void back1(char*,int,int);
+void normal(char*,int,int);
+int main() {
+    char each;
+    int times, front = 0,par = 0,index = 0;
+    scanf("%d\n",&times);
+    while(scanf("%c",&each) != EOF) {
+        char oneline[80] = "";
+        index = 0;
+        oneline[index++] = each;
+        while(scanf("%c",&each) != EOF){
+            oneline[index++] = each;
+            if(each == '\n'){
+                oneline[index] = '\0';
+                index = 0;
+                break;
+            }
+        }
+        int i = strlen(oneline),k,d,start = 0,end;
+        for(k=0;k < i;k++){
+            if(oneline[k] == '(')
+                par++;
+            if(oneline[k] == ')')
+                par--;
+            if(par == 0 && oneline[k] == '{'){
+                indent1(front);
+                front++;
+                front1(oneline,k);
+                break;
+            }
+            if(oneline[k] == '}'){
+                front--;
+                indent1(front);
+                back1(oneline,k,i);
+                break;
+            }
+            if(par == 0 && oneline[k] == ';'){
+                end = k;
+                while(oneline[k+1] == ' ')
+                    k++;
+                indent1(front);
+                normal(oneline,start,end);
+                start = k+1;
+                }
+          	
+            }
+        }
+    return 0;
+}
+void indent1(int a){
+    int i = 0;
+    for (i = 0; i < a;i++)
+        printf("    ");
+}
+void front1(char* a,int b){
+    int end = b,i;
+    while((*(a+end-1)) == ' '){
+        end--;
+    }
+    for(i=0;i < end;i++)
+        printf("%c",*(a+i));
+    printf(" ");
+    printf("{\n");
+}
+void back1(char* a, int b,int length){
+    int i;
+    for(i = b; i < length;i++)
+        printf("%c",*(a+i));
+}
+void normal(char* a,int start,int end){
+    int length = strlen(a), i;
+    for(i = start;i<=end;i++)
+        printf("%c",*(a+i));
+    printf("\n");
+}
