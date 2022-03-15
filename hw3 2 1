@@ -1,0 +1,64 @@
+int main() {
+    char oneline[80], each, after[100];
+    int times, indent = 0, index = 0, front = 0, back = 0;
+    const int space = 4;
+    scanf("%d\n",&times);
+    while(scanf("%c",&each) != EOF) {
+        index = 0;
+        oneline[index++] = each;
+        while(scanf("%c",&each) != EOF){
+            oneline[index++] = each;
+            if(each == '\n'){
+                oneline[index] = '\0';
+                index = 0;
+                break;
+            }
+        }
+        int i = strlen(oneline),k,d;
+        printf("oneline = %s\n",oneline);
+        for(k = 0;k < i;k++ ){
+            if(oneline[k] == '{'){
+                front++;
+                if(after[index-1] != ' '){
+                    after[index++] = ' ';
+                    after[index++] = oneline[k];
+                }
+                else{
+                    while(after[index-2] == ' '){
+                        index--;
+                    }
+                    after[index++] = oneline[k];
+                }
+            }
+            else if(oneline[k] == '}'){
+                front--;
+                after[index++] = oneline[k];
+            }
+            else if(oneline[k] == ';' && oneline[k+1] != '\n'){
+                after[index++] = ';';
+                after[index++] = '\n';
+                while(oneline[k+1] == ' '||oneline[k+1] == '\n'){
+                    k++;
+                }
+                for(d = 0;d < front*space;d++){
+                    after[index++] = ' ';
+                }
+            }
+            else if(oneline[k] == '\n'){
+                after[index++] = oneline[k];
+                while(oneline[k+1] == ' '){
+                    k++;
+                }
+                for(d = 0;d < front*space;d++){
+                    after[index++] = ' ';
+                }
+            }
+            else{
+                after[index++] = oneline[k];
+            }
+        }
+        after[index] = '\0';
+
+    }
+    return 0;
+}
