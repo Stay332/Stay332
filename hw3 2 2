@@ -8,20 +8,19 @@ void back1(char*,int,int);
 void normal(char*,int,int);
 int main() {
     char each;
-    int times, front = 0,par = 0,index = 0;
+    int times, front = 0,par = 0,index = 0,f;
     scanf("%d\n",&times);
-    while(scanf("%c",&each) != EOF) {
+    for(f = 0;f < times;f++) {
         char oneline[80] = "";
         index = 0;
-        oneline[index++] = each;
         while(scanf("%c",&each) != EOF){
             oneline[index++] = each;
             if(each == '\n'){
-                oneline[index] = '\0';
-                index = 0;
                 break;
             }
+        oneline[index] = '\0';
         }
+        
         int i = strlen(oneline),k,d,start = 0,end;
         for(k=0;k < i;k++){
             if(oneline[k] == '(')
@@ -40,7 +39,7 @@ int main() {
                 back1(oneline,k,i);
                 break;
             }
-            if(par == 0 && oneline[k] == ';'){
+            if(par == 0 && oneline[k] == ';' && k != i-1){
                 end = k;
                 while(oneline[k+1] == ' ')
                     k++;
@@ -48,7 +47,11 @@ int main() {
                 normal(oneline,start,end);
                 start = k+1;
                 }
-          	
+          	if(par == 0 && oneline[k] == ';' && k == i-1){
+              indent1(front);
+              for(d = start;d < i;d++)
+                printf("%c",oneline[d]);
+            }
             }
         }
     return 0;
