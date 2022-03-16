@@ -46,7 +46,7 @@ int main(){
   	    if(quan > 1){
   	        all *= 1.1;
   	    }
-  	    if( x1>1 || (x1 >= 1 && once[length-1] != 'x'))
+  	    if((x1 == 1 && once[length-1] != 'x')|| x1>1 ||(x1 == 0 && quan > 1))
   	        valid = 0;
   	    int ss = 0;
   	    for(int k = 0; k <quan;k++){
@@ -93,7 +93,7 @@ int main(){
   	                a++;
   	                jump = Lo;
   	            }
-                if(onetime[a] == 'z'){
+                else if(onetime[a] == 'z'){
                     a++;
                     jump = Lz;
                 }
@@ -122,7 +122,7 @@ int main(){
   	        for(a; a < length1;a++){
   	            if(onetime[a] == 'q')
   	                q++;
-  	            if(onetime[a] == '<')
+  	            else if(onetime[a] == '<')
   	                anno++;
   	            else
   	                valid = 0;
