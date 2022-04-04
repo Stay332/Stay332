@@ -197,8 +197,9 @@ void MovePacman(Game* game, Direction direction) {
         else if ((*game).ghostmove == false)
             (*game).ghostmove = true;
     }
-    if ((*game).superpower == 0)
+    if ((*game).superpower == 0){
         (*game).ghostmove = true;
+    }
     int row = (*game).prow, col = (*game).pcol;
     if (direction == up)
         row--;
@@ -244,7 +245,7 @@ void MovePacman(Game* game, Direction direction) {
                                 (*game).state = winning;
                         }
                         else if ((*game).ghosts[i].cover == 'o') {
-                            (*game).scare = true;
+                            
                             (*game).score += CAPSULE_SCORE;
                             (*game).superpower = CAPSULE_DURATION;                            
                             (*game).foodCount--;
@@ -293,7 +294,7 @@ void MovePacman(Game* game, Direction direction) {
 bool AddGhost(Game* game, int r, int c, Direction direction) {
     if (r >= (*game).rows || c >= (*game).columns || r < 0 || c < 0 || (*game).ghostcount >= MAX_GHOSTS)
         return false; // This is not always correct.
-    else if ((*game).grid[r][c] == ' ' || (*game).grid[r][c] == '.') {
+    else if ((*game).grid[r][c] == ' ' || (*game).grid[r][c] == '.' || (*game).grid[r][c] == 'o') {
         eachghost one;
         one.row = r;
         one.col = c;
@@ -320,7 +321,7 @@ bool AddGhost(Game* game, int r, int c, Direction direction) {
 void MoveGhosts(Game* game) {
     if ((*game).superpower > 0)
         (*game).scare = true;
-    if ((*game).ghostmove == false && (*game).superpower != 0)
+    if ((*game).ghostmove == false )
         return;
     if ((*game).superpower == 0) {
         NormalGhost(game);
@@ -550,14 +551,14 @@ void MoveGhosts(Game* game) {
 bool AddCapsule(Game* game, int r, int c) {
     if (r >= (*game).rows || c >= (*game).columns || r < 0 || c < 0)
         return false;
-    else if ((*game).grid[r][c] == ' ')  {
+    else if ((*game).grid[r][c] == ' ' ) {
         (*game).grid[r][c] = 'o';
         (*game).foodCount++;
         return true;
     }
-    else if ((*game).grid[r][c] == '.') {
-        (*game).grid[r][c] = 'o';
-        return true;
+  	else if((*game).grid[r][c] == '.'){
+      (*game).grid[r][c] = 'o';
+      return true;
     }
     else
         return false;
@@ -576,21 +577,13 @@ int main() {
     Game* game = NewGame(8, 8);
     AddFood(game, 2, 3);
     AddFood(game, 1, 5);
-    AddFood(game, 3, 3);
     AddGhost(game, 2, 1, right);
     AddPacman(game, 7, 2);
     AddGhost(game, 3, 3, left);
     AddGhost(game, 3, 2, up);
     AddWall(game, 1, 1);
     AddWall(game, 3, 4);
-    AddWall(game, 3, 1);
     AddFood(game, 4, 2);
-    AddGhost(game, 0, 0, up);
-    AddFood(game, 6, 3);
-    AddCapsule(game, 2, 2);
-    AddCapsule(game, 7, 3);
-    AddCapsule(game, 7, 4);
-    AddCapsule(game, 7, 5);
     // Add walls, foods, and pacman here.
 
     PlayGame(game);
